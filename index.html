@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт 5 "Л" Класса</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            light: '#7DD3FC', // Sky 300
+                            DEFAULT: '#0EA5E9', // Sky 500
+                            dark: '#0284C7', // Sky 600
+                        },
+                        accent: {
+                            light: '#BEF264', // Lime 300
+                            DEFAULT: '#84CC16', // Lime 500
+                            dark: '#65A30D', // Lime 600
+                        },
+                        glass: 'rgba(255, 255, 255, 0.65)'
+                    },
+                    boxShadow: {
+                        'aero': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.7)',
+                        'glow': '0 0 15px rgba(14, 165, 233, 0.5)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* FRUTIGER AERO BACKGROUND */
+        body {
+            background: linear-gradient(180deg, #87CEFA 0%, #E0F7FA 45%, #FFFFFF 50%, #90EE90 50%, #3CB371 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            min-height: 100vh;
+            color: #334155;
+        }
+
+        /* Пузырьки на фоне */
+        .bubbles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.1));
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: rise 10s infinite ease-in;
+            opacity: 0.6;
+        }
+        .bubble:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-duration: 8s; animation-delay: 0s; }
+        .bubble:nth-child(2) { left: 20%; width: 40px; height: 40px; animation-duration: 10s; animation-delay: 2s; }
+        .bubble:nth-child(3) { left: 35%; width: 60px; height: 60px; animation-duration: 7s; animation-delay: 4s; }
+        .bubble:nth-child(4) { left: 50%; width: 90px; height: 90px; animation-duration: 11s; animation-delay: 1s; }
+        .bubble:nth-child(5) { left: 65%; width: 30px; height: 30px; animation-duration: 13s; animation-delay: 3s; }
+        .bubble:nth-child(6) { left: 80%; width: 70px; height: 70px; animation-duration: 9s; animation-delay: 5s; }
+        
+        @keyframes rise {
+            0% { bottom: -100px; transform: translateX(0); }
+            50% { transform: translateX(20px); }
+            100% { bottom: 120%; transform: translateX(-20px); }
+        }
+
+        /* Глянцевые панели (Aero Glass) */
+        .glass-panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Стилизация скроллбара */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(to bottom, #7DD3FC, #0EA5E9); 
+            border-radius: 5px; 
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        /* Кнопки в стиле Aero */
+        .aero-btn {
+            background: linear-gradient(180deg, #ffffff 0%, #e6e6e6 49%, #d4d4d4 50%, #ececec 100%);
+            border: 1px solid #a3a3a3;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 2px 3px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .aero-btn:active {
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+            transform: translateY(1px);
+        }
+        
+        /* Акцентные кнопки (Голубые/Зеленые) */
+        .nav-btn {
+            position: relative;
+            border-radius: 999px;
+            transition: all 0.3s;
+            color: #0284C7;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+        }
+        .nav-btn:hover {
+            background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(125, 211, 252, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);
+        }
+
+        /* Глянцевые карточки */
+        .aero-card {
+            background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(240,249,255,0.8) 100%);
+            border: 1px solid rgba(255,255,255,0.9);
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05), inset 0 0 20px rgba(255,255,255,0.8);
+            position: relative;
+        }
+        .aero-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 40%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 100%);
+            border-radius: 1rem 1rem 40% 40% / 1rem 1rem 2rem 2rem;
+            pointer-events: none;
+        }
+
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.2); }
+        
+        /* Анимации */
+        .tab-content { display: none; animation: zoomIn 0.4s; }
+        .tab-content.active { display: block; }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        /* Переключатель */
+        .toggle-checkbox:checked { right: 0; border-color: #84CC16; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #84CC16; }
+        
+        .edit-element { display: none; }
+        .editing-active .edit-element { display: inline-flex; }
+        
+        .editing-active main {
+            border: 3px dashed #0EA5E9;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 1rem;
+            margin-top: 7rem;
+            position: relative;
+        }
+        .editing-active main::before {
+            content: '🛠 РЕЖИМ СТАРОСТЫ 🛠';
+            position: absolute;
+            top: -1.8rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #0EA5E9, #84CC16);
+            color: white;
+            padding: 0.3rem 1.5rem;
+            border-radius: 99px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        /* Кнопки действий */
+        .btn-glossy-blue {
+            background: linear-gradient(180deg, #38BDF8 0%, #0284C7 100%);
+            border: 1px solid #0369A1;
+            color: white;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .btn-glossy-green {
+            background: linear-gradient(180deg, #BEF264 0%, #65A30D 100%);
+            border: 1px solid #4D7C0F;
+            color: white;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Пузырьки фона -->
+    <div class="bubbles">
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="fixed w-full z-50 glass-panel top-0 left-0 rounded-b-2xl mx-auto max-w-7xl left-0 right-0 mt-2 shadow-aero">
+        <div class="px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center cursor-pointer flex-shrink-0 mr-4" onclick="switchTab('news')">
+                    <!-- Иконка глобуса для атмосферы -->
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-300 to-blue-600 rounded-full flex items-center justify-center text-white shadow-lg mr-2 border-2 border-white">
+                        <i class="fa-solid fa-earth-americas"></i>
+                    </div>
+                    <span class="font-extrabold text-2xl text-brand-dark hidden sm:block drop-shadow-sm tracking-tight" style="font-family: 'Verdana', sans-serif;">5 "Л"</span>
+                </div>
+                
+                <!-- Десктоп меню -->
+                <div class="hidden md:flex items-center space-x-2 overflow-x-auto py-1">
+                    <button onclick="switchTab('news')" class="nav-btn px-4 py-1.5 font-bold">Новости</button>
+                    <button onclick="switchTab('study')" class="nav-btn px-4 py-1.5 font-bold">Учёба</button>
+                    <button onclick="switchTab('class-info')" class="nav-btn px-4 py-1.5 font-bold">Класс</button>
+                    <button onclick="switchTab('gallery')" class="nav-btn px-4 py-1.5 font-bold">Фото</button>
+                    <button onclick="switchTab('students')" class="nav-btn px-4 py-1.5 font-bold">Профили</button>
+                    <button onclick="switchTab('school-pages')" class="nav-btn px-4 py-1.5 font-bold text-brand-dark"><i class="fas fa-school mr-1"></i>Школа</button>
+                    <button onclick="switchTab('birthdays')" class="nav-btn px-4 py-1.5 font-bold text-accent-dark"><i class="fas fa-birthday-cake mr-1"></i>Поздравления</button>
+                </div>
+
+                <!-- Мобильное меню кнопка -->
+                <div class="flex items-center md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-brand-dark p-2 bg-white/50 rounded-lg backdrop-blur-sm border border-white/50"><i class="fas fa-bars text-xl"></i></button>
+                </div>
+            </div>
+        </div>
+        <!-- Мобильное меню -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel m-2 rounded-xl border border-white/80">
+            <div class="p-2 space-y-1">
+                <button onclick="switchTab('news')" class="block w-full text-left px-4 py-2 rounded hover:bg-white/50 text-brand-dark font-bold">Новости</button>
+                <button onclick="switchTab('study')" class="block w-full text-left px-4 py-2 rounded hover:bg-white/50 text-brand-dark font-bold">Учёба</button>
+                <button onclick="switchTab('class-info')" class="block w-full text-left px-4 py-2 rounded hover:bg-white/50 text-brand-dark font-bold">Наш Класс</button>
+                <button onclick="switchTab('gallery')" class="block w-full text-left px-4 py-2 rounded hover:bg-white/50 text-brand-dark font-bold">Фото</button>
+                <button onclick="switchTab('students')" class="block w-full text-left px-4 py-2 rounded hover:bg-white/50 text-brand-dark font-bold">Крупным планом</button>
+                <div class="border-t border-brand-light/30 my-1"></div>
+                <button onclick="switchTab('school-pages')" class="block w-full text-left px-4 py-2 rounded hover:bg-white/50 text-brand-dark font-bold">Школьные страницы</button>
+                <button onclick="switchTab('birthdays')" class="block w-full text-left px-4 py-2 rounded hover:bg-white/50 text-accent-dark font-bold">Поздравления</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="flex-grow pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10">
+
+        <!-- 1. Новости -->
+        <div id="news" class="tab-content active">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-4xl font-extrabold text-white drop-shadow-md" style="text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Классные Новости</h1>
+                <button onclick="openModal('addNewsModal')" class="btn-glossy-blue px-6 py-2 rounded-full shadow-lg edit-element items-center gap-2 transform hover:scale-105 transition font-bold">
+                    <i class="fas fa-plus"></i> <span class="hidden sm:inline">Добавить</span>
+                </button>
+            </div>
+            <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+
+        <!-- 2. Учеба -->
+        <div id="study" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="aero-card p-6 sticky top-28">
+                        <div class="flex justify-between items-center mb-6 relative z-10">
+                            <h2 class="text-2xl font-bold text-brand-dark flex items-center gap-2">
+                                <i class="fas fa-book-open text-accent"></i> Д/З
+                            </h2>
+                            <button onclick="openModal('addHomeworkModal')" class="btn-glossy-green text-xs px-3 py-1.5 rounded-full edit-element shadow">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="homework-list" class="space-y-4 relative z-10"></div>
+                        <div id="no-homework" class="hidden text-center py-8 text-gray-400 relative z-10">
+                            <i class="fas fa-check-circle text-4xl mb-2 text-accent-light"></i>
+                            <p>Заданий нет!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-white drop-shadow-md">Расписание уроков</h2>
+                        <button onclick="editScheduleMode()" class="text-white bg-brand/50 px-3 py-1 rounded-full backdrop-blur-sm hover:bg-brand font-bold text-sm edit-element border border-white/50">Редактировать</button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="schedule-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Наш Класс -->
+        <div id="class-info" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="aero-card p-6 flex items-center gap-4 relative">
+                    <button onclick="openEditLeadership('teacher')" class="absolute top-2 right-2 text-gray-400 hover:text-brand edit-element z-20"><i class="fas fa-pen"></i></button>
+                    <div class="w-20 h-20 bg-gradient-to-br from-brand-light to-brand rounded-full flex items-center justify-center text-white text-3xl flex-shrink-0 shadow-lg border-2 border-white relative z-10">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide">Классный руководитель</h3>
+                        <p class="text-xl font-bold text-gray-800" id="teacher-name">Loading...</p>
+                        <a href="" id="teacher-phone-link" class="text-brand-dark font-bold hover:underline mt-1 block">
+                            <i class="fas fa-phone-alt text-sm mr-1"></i> <span id="teacher-phone">...</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="aero-card p-6 flex items-center gap-4 relative">
+                    <button onclick="openEditLeadership('starosta')" class="absolute top-2 right-2 text-gray-400 hover:text-brand edit-element z-20"><i class="fas fa-pen"></i></button>
+                    <div class="w-20 h-20 bg-gradient-to-br from-pink-300 to-pink-500 rounded-full flex items-center justify-center text-white text-3xl flex-shrink-0 shadow-lg border-2 border-white relative z-10">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide">Староста класса</h3>
+                        <p class="text-xl font-bold text-gray-800" id="starosta-name">Loading...</p>
+                        <a href="" id="starosta-phone-link" class="text-brand-dark font-bold hover:underline mt-1 block">
+                            <i class="fas fa-phone-alt text-sm mr-1"></i> <span id="starosta-phone">...</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="aero-card p-6">
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-200/50 pb-2 relative z-10">
+                        <h3 class="text-xl font-bold text-brand-dark">Наши Учителя</h3>
+                        <button onclick="openModal('addTeacherModal')" class="text-accent hover:text-accent-dark edit-element"><i class="fas fa-plus-circle text-2xl drop-shadow-sm"></i></button>
+                    </div>
+                    <ul id="teachers-list" class="divide-y divide-gray-100 relative z-10"></ul>
+                </div>
+                <div class="aero-card p-6">
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-200/50 pb-2 relative z-10">
+                        <h3 class="text-xl font-bold text-brand-dark">Список класса</h3>
+                        <button onclick="openModal('addClassmateModal')" class="text-accent hover:text-accent-dark edit-element"><i class="fas fa-plus-circle text-2xl drop-shadow-sm"></i></button>
+                    </div>
+                    <div class="max-h-96 overflow-y-auto pr-2 relative z-10 scrollbar-thin">
+                        <ul id="class-list" class="space-y-2"></ul>
+                    </div>
+                    <div class="mt-4 pt-2 border-t border-gray-200/50 text-right text-sm text-gray-500 relative z-10">
+                        Всего учеников: <span id="students-count" class="font-bold text-brand">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Фотогалерея -->
+        <div id="gallery" class="tab-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-white drop-shadow-md">Фотоальбом</h2>
+                <label class="btn-glossy-blue px-4 py-2 rounded-full cursor-pointer shadow-lg edit-element flex items-center gap-2 font-bold hover:scale-105 transition">
+                    <i class="fas fa-camera"></i> <span>Добавить фото</span>
+                    <input type="file" class="hidden" accept="image/*" onchange="handlePhotoUpload(this)">
+                </label>
+            </div>
+            <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+        </div>
+
+        <!-- 5. Крупным Планом -->
+        <div id="students" class="tab-content">
+             <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-white drop-shadow-md">Крупным планом</h2>
+                <button onclick="openModal('addStudentProfileModal')" class="btn-glossy-green px-5 py-2.5 rounded-full shadow-lg hover:scale-105 transition font-bold flex items-center gap-2">
+                    <i class="fas fa-pen-fancy"></i> Рассказать о себе
+                </button>
+            </div>
+            <div id="profiles-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+
+        <!-- 6. Школьные страницы -->
+        <div id="school-pages" class="tab-content">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-extrabold text-white drop-shadow-lg">Школьные Страницы</h1>
+                <p class="text-white/90 mt-2 font-semibold text-lg drop-shadow">Все самые важные ресурсы в одном месте</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                <!-- Официальный сайт -->
+                <a href="#" class="group aero-card p-6 flex items-center gap-4 hover:border-brand transition duration-300">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg group-hover:scale-110 transition relative z-10">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-bold text-gray-800">Официальный сайт школы</h3>
+                        <p class="text-sm text-gray-600">Новости и расписание.</p>
+                    </div>
+                </a>
+
+                <!-- Электронный дневник -->
+                <a href="#" class="group aero-card p-6 flex items-center gap-4 hover:border-green-500 transition duration-300">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg group-hover:scale-110 transition relative z-10">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-bold text-gray-800">Электронный дневник</h3>
+                        <p class="text-sm text-gray-600">Оценки и домашка.</p>
+                    </div>
+                </a>
+
+                <!-- Школьное меню -->
+                <a href="#" class="group aero-card p-6 flex items-center gap-4 hover:border-orange-500 transition duration-300">
+                    <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg group-hover:scale-110 transition relative z-10">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-bold text-gray-800">Школьное меню</h3>
+                        <p class="text-sm text-gray-600">Меню столовой.</p>
+                    </div>
+                </a>
+
+                <!-- Видеоуроки -->
+                <a href="#" class="group aero-card p-6 flex items-center gap-4 hover:border-red-500 transition duration-300">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-400 to-red-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg group-hover:scale-110 transition relative z-10">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-bold text-gray-800">Видеоуроки</h3>
+                        <p class="text-sm text-gray-600">Дополнительные материалы.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 7. Поздравления -->
+        <div id="birthdays" class="tab-content">
+            <!-- Блок именинников -->
+            <div class="bg-gradient-to-br from-brand-light to-brand rounded-3xl p-8 mb-10 text-white text-center relative overflow-hidden shadow-2xl border-4 border-white/30">
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')] opacity-10"></div>
+                <div class="relative z-10">
+                    <h2 class="text-4xl font-extrabold mb-6 drop-shadow-lg">🎉 Именинники Месяца 🎉</h2>
+                    <div class="flex flex-wrap justify-center gap-8">
+                        <!-- Именинник 1 -->
+                        <div class="aero-card p-4 w-48 transform hover:scale-110 transition duration-300">
+                            <div class="text-5xl mb-2 drop-shadow-sm">👸</div>
+                            <h3 class="font-bold text-lg text-gray-800 relative z-10">Аня Смирнова</h3>
+                            <p class="text-brand font-bold text-sm relative z-10">15 ноября</p>
+                        </div>
+                        <!-- Именинник 2 -->
+                        <div class="aero-card p-4 w-48 transform hover:scale-110 transition duration-300">
+                            <div class="text-5xl mb-2 drop-shadow-sm">🎮</div>
+                            <h3 class="font-bold text-lg text-gray-800 relative z-10">Максим Иванов</h3>
+                            <p class="text-brand font-bold text-sm relative z-10">22 ноября</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Стена пожеланий -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-white drop-shadow-md"><i class="fas fa-heart text-red-500 mr-2 drop-shadow-sm"></i>Стена пожеланий</h2>
+                <button onclick="openModal('addWishModal')" class="btn-glossy-blue px-4 py-2 rounded-full shadow-lg transition flex items-center gap-2 font-bold">
+                    <i class="fas fa-paper-plane"></i> Оставить пожелание
+                </button>
+            </div>
+
+            <div id="wishes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+
+    </main>
+
+    <!-- ПЕРЕКЛЮЧАТЕЛЬ РЕЖИМА РЕДАКТИРОВАНИЯ (FOOTER) -->
+    <div class="fixed bottom-4 left-4 z-50">
+        <div class="glass-panel px-3 py-2 rounded-full shadow-aero flex items-center gap-2">
+            <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                <input type="checkbox" name="toggle" id="edit-mode-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-2 border-gray-300 appearance-none cursor-pointer transition-all duration-300 left-0 shadow-inner"/>
+                <label for="edit-mode-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300 shadow-inner"></label>
+            </div>
+            <label for="edit-mode-toggle" class="text-xs font-bold text-gray-600 cursor-pointer uppercase tracking-wide mr-1">
+                Староста
+            </label>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНЫЕ ОКНА (Дизайн обновлен до Aero) -->
+
+    <!-- Модальное окно ВВОДА ПАРОЛЯ -->
+    <div id="passwordModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="aero-card w-full max-w-sm p-8 text-center">
+            <div class="w-16 h-16 bg-gradient-to-b from-gray-100 to-gray-300 rounded-full mx-auto flex items-center justify-center shadow-lg border border-gray-400 mb-4">
+                <i class="fas fa-lock text-gray-600 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2 relative z-10">Доступ старосты</h3>
+            <p class="text-sm text-gray-500 mb-6 relative z-10">Введите секретный пароль</p>
+            <form onsubmit="verifyPassword(event)" class="relative z-10">
+                <div class="relative w-full mb-4">
+                    <input type="password" id="passwordInput" placeholder="Пароль" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand shadow-inner text-center text-lg tracking-widest bg-white/80 pr-10" autofocus>
+                    <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-brand cursor-pointer z-20" title="Показать/скрыть пароль">
+                        <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                    </button>
+                </div>
+                <div class="flex gap-2">
+                    <button type="button" onclick="cancelPassword()" class="flex-1 py-2 rounded-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 font-bold text-gray-600 shadow-sm">Отмена</button>
+                    <button type="submit" class="flex-1 btn-glossy-blue py-2 rounded-lg font-bold shadow-md">Войти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Ответ -->
+    <div id="aiResponseModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+        <div class="aero-card w-full max-w-lg overflow-hidden flex flex-col max-h-[80vh]">
+            <div class="bg-gradient-to-r from-brand to-brand-light p-4 flex items-center gap-3 border-b border-white/30">
+                <div class="bg-white/20 p-2 rounded-full backdrop-blur-md border border-white/40">
+                    <i class="fas fa-robot text-white text-xl"></i>
+                </div>
+                <h3 class="text-white font-bold text-lg drop-shadow-sm">AI Помощник</h3>
+            </div>
+            <div class="p-6 overflow-y-auto relative z-10 bg-white/50">
+                <div id="ai-content" class="prose text-gray-800 leading-relaxed font-medium"></div>
+            </div>
+            <div class="bg-gray-50/80 px-6 py-4 flex justify-end relative z-10 border-t border-gray-200">
+                <button onclick="closeModal('aiResponseModal')" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-bold transition shadow-sm border border-gray-300">Понятно, спасибо!</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Добавить ДЗ -->
+    <div id="addHomeworkModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+        <div class="aero-card w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4 relative z-10 text-brand-dark">Добавить Д/З</h3>
+            <form onsubmit="submitHomework(event)" class="relative z-10">
+                <input id="hwSubject" type="text" placeholder="Предмет (Математика)" class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required>
+                <input id="hwTask" type="text" placeholder="Задание (Стр. 5 №10)" class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required>
+                <input id="hwDate" type="text" placeholder="Срок (Завтра, 25.11)" class="w-full p-2 border border-gray-300 rounded mb-4 shadow-inner bg-white/80" required>
+                <button type="submit" class="w-full btn-glossy-green py-2 rounded font-bold shadow-md mb-2">Добавить</button>
+                <button type="button" onclick="closeModal('addHomeworkModal')" class="w-full py-2 text-gray-500 hover:text-gray-700 font-bold">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Редактировать Руководство -->
+    <div id="editLeadershipModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+        <div class="aero-card w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4 relative z-10 text-brand-dark" id="leadershipModalTitle">Изменить данные</h3>
+            <form onsubmit="submitLeadership(event)" class="relative z-10">
+                <input type="hidden" id="leadershipType">
+                <label class="block text-sm font-bold mb-1 text-gray-600">ФИО</label>
+                <input id="leadName" type="text" class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required>
+                <label class="block text-sm font-bold mb-1 text-gray-600">Телефон</label>
+                <input id="leadPhone" type="text" class="w-full p-2 border border-gray-300 rounded mb-4 shadow-inner bg-white/80" required>
+                <button type="submit" class="w-full btn-glossy-blue py-2 rounded font-bold shadow-md mb-2">Сохранить</button>
+                <button type="button" onclick="closeModal('editLeadershipModal')" class="w-full py-2 text-gray-500 hover:text-gray-700 font-bold">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Добавить учителя -->
+    <div id="addTeacherModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+        <div class="aero-card w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4 relative z-10 text-brand-dark">Добавить учителя</h3>
+            <form onsubmit="submitTeacher(event)" class="relative z-10">
+                <input id="teachSubject" type="text" placeholder="Предмет (История)" class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required>
+                <input id="teachName" type="text" placeholder="ФИО (Иванова А.А.)" class="w-full p-2 border border-gray-300 rounded mb-4 shadow-inner bg-white/80" required>
+                <button type="submit" class="w-full btn-glossy-blue py-2 rounded font-bold shadow-md mb-2">Добавить</button>
+                <button type="button" onclick="closeModal('addTeacherModal')" class="w-full py-2 text-gray-500 hover:text-gray-700 font-bold">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Добавить ученика в список -->
+    <div id="addClassmateModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+        <div class="aero-card w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4 relative z-10 text-brand-dark">Добавить ученика</h3>
+            <form onsubmit="submitClassmate(event)" class="relative z-10">
+                <input id="classmateName" type="text" placeholder="Фамилия Имя" class="w-full p-2 border border-gray-300 rounded mb-4 shadow-inner bg-white/80" required>
+                <button type="submit" class="w-full btn-glossy-blue py-2 rounded font-bold shadow-md mb-2">Добавить</button>
+                <button type="button" onclick="closeModal('addClassmateModal')" class="w-full py-2 text-gray-500 hover:text-gray-700 font-bold">Отмена</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Добавить новость -->
+    <div id="addNewsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+        <div class="aero-card w-full max-w-md p-6">
+            <div class="flex justify-between items-center mb-4 relative z-10">
+                <h3 class="text-xl font-bold text-brand-dark">Новая новость</h3>
+                <button type="button" onclick="generateNewsAI()" class="text-sm btn-glossy-green px-3 py-1 rounded-full hover:scale-105 transition shadow-md flex items-center gap-2 font-bold" id="ai-news-btn">
+                    <i class="fas fa-magic"></i> Написать с ИИ
+                </button>
+            </div>
+            <form onsubmit="submitNews(event)" class="relative z-10">
+                <input id="newsTitle" type="text" placeholder="Заголовок" class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required>
+                <div class="relative">
+                    <textarea id="newsContent" rows="4" placeholder="Текст новости..." class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required></textarea>
+                    <div id="ai-news-loader" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center rounded">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-spinner fa-spin text-brand text-2xl"></i>
+                            <span class="text-xs text-brand font-bold mt-1">Gemini пишет...</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="w-full btn-glossy-blue py-2 rounded font-bold shadow-md mb-2">Опубликовать</button>
+                <button type="button" onclick="closeModal('addNewsModal')" class="w-full py-2 text-gray-500 hover:text-gray-700 font-bold">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Добавить анкету -->
+    <div id="addStudentProfileModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+        <div class="aero-card w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4 relative z-10 text-brand-dark">Крупным планом</h3>
+            <form onsubmit="submitProfile(event)" class="relative z-10">
+                <input id="profName" type="text" placeholder="Имя Фамилия" class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required>
+                <input id="profHobby" type="text" placeholder="Мое хобби" class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required>
+                <textarea id="profBio" rows="3" placeholder="Немного о себе..." class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required></textarea>
+                <select id="profEmoji" class="w-full p-2 border border-gray-300 rounded mb-4 shadow-inner bg-white/80">
+                    <option>😎</option><option>🤓</option><option>⚽</option><option>🎨</option><option>🎮</option><option>💃</option><option>🎸</option>
+                </select>
+                <button type="submit" class="w-full btn-glossy-green py-2 rounded font-bold shadow-md mb-2">Опубликовать</button>
+                <button type="button" onclick="closeModal('addStudentProfileModal')" class="w-full py-2 text-gray-500 hover:text-gray-700 font-bold">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Добавить пожелание -->
+    <div id="addWishModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+        <div class="aero-card w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4 text-center relative z-10 text-brand-dark">🎉 Оставить пожелание</h3>
+            <form onsubmit="submitWish(event)" class="relative z-10">
+                <input id="wishTo" type="text" placeholder="Кому (например: Ане)" class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required>
+                <textarea id="wishText" rows="3" placeholder="Твои теплые слова..." class="w-full p-2 border border-gray-300 rounded mb-3 shadow-inner bg-white/80" required></textarea>
+                <input id="wishFrom" type="text" placeholder="От кого (твое имя)" class="w-full p-2 border border-gray-300 rounded mb-4 shadow-inner bg-white/80" required>
+                <button type="submit" class="w-full btn-glossy-blue py-2 rounded font-bold hover:scale-105 transition shadow-md mb-2">Отправить</button>
+                <button type="button" onclick="closeModal('addWishModal')" class="w-full py-2 text-gray-500 hover:text-gray-700 font-bold">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Тост уведомление -->
+    <div id="toast" class="fixed bottom-20 right-5 bg-gray-800/90 text-white px-6 py-3 rounded-xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 border border-white/20 backdrop-blur-md font-bold"></div>
+
+    <script>
+        // --- GEMINI API CONFIG ---
+        const apiKey = ""; 
+        
+        async function callGemini(prompt) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }]
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error('API Error');
+
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (error) {
+                console.error("Gemini Error:", error);
+                return "Ой, что-то пошло не так. Попробуй позже!";
+            }
+        }
+
+        // --- AI FEATURES ---
+        async function explainHomework(id) {
+            const hw = homework.find(h => h.id === id);
+            if (!hw) return;
+
+            document.getElementById('aiResponseModal').classList.remove('hidden');
+            const contentDiv = document.getElementById('ai-content');
+            contentDiv.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-10 text-brand">
+                    <i class="fas fa-sparkles fa-spin text-4xl mb-4"></i>
+                    <p class="font-bold animate-pulse">ИИ думает над заданием...</p>
+                </div>
+            `;
+
+            const prompt = `Ты — дружелюбный учитель для 5 класса. Объясни кратко и понятно, как выполнить это задание по предмету "${hw.subject}": "${hw.task}". Дай подсказку, но не решай за ученика полностью. Используй эмодзи.`;
+            
+            const response = await callGemini(prompt);
+            
+            const formattedResponse = response
+                .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+                .replace(/\*(.*?)\*/g, '<i>$1</i>')
+                .replace(/\n/g, '<br>');
+
+            contentDiv.innerHTML = formattedResponse;
+        }
+
+        async function generateNewsAI() {
+            const title = document.getElementById('newsTitle').value;
+            if (!title) {
+                showToast("Сначала введите заголовок новости!");
+                return;
+            }
+
+            const btn = document.getElementById('ai-news-btn');
+            const loader = document.getElementById('ai-news-loader');
+            const textarea = document.getElementById('newsContent');
+            
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+            loader.classList.remove('hidden');
+
+            const prompt = `Напиши короткую, веселую и интересную новость для школьного сайта 5 класса с заголовком: "${title}". Стиль: дружелюбный, школьный. Длина: 2-3 предложения.`;
+
+            const text = await callGemini(prompt);
+            
+            textarea.value = text;
+            
+            loader.classList.add('hidden');
+            btn.disabled = false;
+            btn.classList.remove('opacity-50');
+        }
+
+
+        // --- ДАННЫЕ ---
+        
+        let isEditMode = false;
+
+        let leadership = {
+            teacher: { name: "Иванова Мария Ивановна", phone: "+7 (900) 123-45-67" },
+            starosta: { name: "Смирнов Артем", phone: "+7 (900) 987-65-43" }
+        };
+
+        let teachers = [
+            { id: 1, subject: "Математика", name: "Петрова Е.С." },
+            { id: 2, subject: "Русский язык", name: "Сидорова А.В." },
+            { id: 3, subject: "История", name: "Волков Д.М." },
+            { id: 4, subject: "Физкультура", name: "Орлов П.П." }
+        ];
+
+        let classmates = [
+            "Алексеев Иван", "Борисова Анна", "Виноградов Денис", 
+            "Григорьева Ольга", "Дмитриев Максим", "Егорова Елена", 
+            "Жуков Петр", "Зимин Кирилл", "Иванова София"
+        ];
+
+        let schedule = {
+            "Понедельник": ["Разговоры о важном", "Математика", "Русский язык", "Литература", "Физкультура"],
+            "Вторник": ["Математика", "Английский язык", "История", "География", "Технология"],
+            "Среда": ["Русский язык", "Литература", "Математика", "Биология", "Музыка"],
+            "Четверг": ["Математика", "Английский язык", "Физкультура", "ИЗО", "Обществознание"],
+            "Пятница": ["Русский язык", "Литература", "История", "Информатика", "Классный час"]
+        };
+
+        let homework = [
+            { id: 1, subject: "Математика", task: "Стр. 45 №12, 14. Повторить таблицу умножения.", date: "Завтра" },
+            { id: 2, subject: "Литература", task: "Читать 'Муму' Тургенева. Подготовить пересказ.", date: "Среда" },
+            { id: 3, subject: "История", task: "Параграф 10, ответить на вопросы в конце.", date: "Четверг" }
+        ];
+
+        let news = [
+            { id: 1, title: "Поход в музей", content: "В пятницу едем в музей! Сбор в 10:00 у школы.", date: "20.10" },
+            { id: 2, title: "Субботник", content: "Всем принести перчатки и хорошее настроение.", date: "18.10" }
+        ];
+
+        let profiles = [
+             { id: 1, name: 'Аня С.', hobby: 'Рисование', bio: 'Обожаю рисовать скетчи на переменах!', emoji: '🎨' },
+             { id: 2, name: 'Макс И.', hobby: 'Футбол', bio: 'Лучший нападающий в классе.', emoji: '⚽' }
+        ];
+
+        let wishes = [
+            { id: 1, to: "Ане", text: "С днем рождения! Желаю одних пятерок!", from: "Маша К." },
+            { id: 2, to: "Максиму", text: "Побед в футболе, ты лучший вратарь!", from: "Команда" }
+        ];
+        
+        let photos = [
+            'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400',
+            'https://images.unsplash.com/photo-1427504746383-796ada276c3f?w=400'
+        ];
+
+        // --- ИНИЦИАЛИЗАЦИЯ ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAll();
+            
+            const toggle = document.getElementById('edit-mode-toggle');
+            
+            toggle.addEventListener('click', (e) => {
+                if (e.target.checked) {
+                    e.preventDefault(); 
+                    e.target.checked = false; 
+                    
+                    document.getElementById('passwordModal').classList.remove('hidden');
+                    const input = document.getElementById('passwordInput');
+                    input.value = '';
+                    input.type = 'password'; // Сброс видимости при открытии
+                    document.getElementById('passwordToggleIcon').className = 'fas fa-eye';
+                    input.focus();
+                } else {
+                    isEditMode = false;
+                    document.body.classList.remove('editing-active');
+                    renderAll();
+                    showToast("Режим просмотра");
+                }
+            });
+        });
+
+        // --- ЛОГИКА ПАРОЛЯ ---
+        function togglePasswordVisibility() {
+            const input = document.getElementById('passwordInput');
+            const icon = document.getElementById('passwordToggleIcon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function verifyPassword(e) {
+            e.preventDefault();
+            const password = document.getElementById('passwordInput').value;
+            const modal = document.getElementById('passwordModal');
+            const toggle = document.getElementById('edit-mode-toggle');
+
+            // Изменён пароль на 'я_староста'
+            if (password === "я_староста") {
+                isEditMode = true;
+                toggle.checked = true;
+                document.body.classList.add('editing-active');
+                renderAll();
+                modal.classList.add('hidden');
+                showToast("Режим старосты включен!");
+            } else {
+                const input = document.getElementById('passwordInput');
+                input.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+                setTimeout(() => input.classList.remove('border-red-500', 'ring-2', 'ring-red-200'), 500);
+                input.value = '';
+                showToast("Неверный пароль!");
+            }
+        }
+
+        function cancelPassword() {
+            document.getElementById('passwordModal').classList.add('hidden');
+            document.getElementById('edit-mode-toggle').checked = false;
+        }
+
+        function renderAll() {
+            renderLeadership();
+            renderTeachers();
+            renderClassList();
+            renderSchedule();
+            renderHomework();
+            renderNews();
+            renderProfiles();
+            renderGallery();
+            renderWishes();
+        }
+
+        // --- РЕНДЕР ФУНКЦИИ ---
+
+        function renderLeadership() {
+            document.getElementById('teacher-name').textContent = leadership.teacher.name;
+            document.getElementById('teacher-phone').textContent = leadership.teacher.phone;
+            document.getElementById('teacher-phone-link').href = `tel:${leadership.teacher.phone}`;
+            
+            document.getElementById('starosta-name').textContent = leadership.starosta.name;
+            document.getElementById('starosta-phone').textContent = leadership.starosta.phone;
+            document.getElementById('starosta-phone-link').href = `tel:${leadership.starosta.phone}`;
+        }
+
+        function renderTeachers() {
+            const list = document.getElementById('teachers-list');
+            list.innerHTML = teachers.map(t => `
+                <li class="py-3 flex justify-between items-center relative z-10">
+                    <div>
+                        <p class="text-sm text-gray-500 font-bold">${t.subject}</p>
+                        <p class="font-bold text-gray-800 text-lg">${t.name}</p>
+                    </div>
+                    ${isEditMode ? `<button onclick="deleteTeacher(${t.id})" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>` : ''}
+                </li>
+            `).join('');
+        }
+
+        function renderClassList() {
+            const list = document.getElementById('class-list');
+            list.innerHTML = classmates.map((name, index) => `
+                <li class="flex items-center justify-between p-2 hover:bg-white/50 rounded transition relative z-10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full text-xs flex items-center justify-center text-gray-600 font-bold shadow-sm border border-gray-400">${index + 1}</div>
+                        <span class="font-bold text-gray-700">${name}</span>
+                    </div>
+                    ${isEditMode ? `<button onclick="deleteClassmate(${index})" class="text-red-400 hover:text-red-600 text-xs transition"><i class="fas fa-trash"></i></button>` : ''}
+                </li>
+            `).join('');
+            document.getElementById('students-count').textContent = classmates.length;
+        }
+
+        function renderSchedule() {
+            const container = document.getElementById('schedule-container');
+            container.innerHTML = Object.entries(schedule).map(([day, lessons]) => `
+                <div class="aero-card p-4">
+                    <div class="flex justify-between items-center mb-3 border-b border-gray-200/50 pb-2 relative z-10">
+                        <h3 class="font-bold text-brand-dark text-lg">${day}</h3>
+                        ${isEditMode ? `<button onclick="editDaySchedule('${day}')" class="text-xs text-gray-400 hover:text-brand transition"><i class="fas fa-pen"></i></button>` : ''}
+                    </div>
+                    <ul class="text-sm space-y-2 text-gray-700 relative z-10">
+                        ${lessons.map((lesson, i) => `
+                            <li class="flex gap-2 items-center">
+                                <span class="text-accent font-bold w-4">${i+1}.</span>
+                                <span class="font-medium">${lesson}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        function renderHomework() {
+            const list = document.getElementById('homework-list');
+            const empty = document.getElementById('no-homework');
+            
+            if (homework.length === 0) {
+                list.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+            
+            list.innerHTML = homework.map(hw => `
+                <div class="bg-gradient-to-r from-yellow-50 to-white border-l-4 border-yellow-400 p-4 rounded-r-lg relative group hover:shadow-md transition shadow-sm mb-3">
+                    ${isEditMode ? `<button onclick="deleteHomework(${hw.id})" class="absolute top-1 right-1 text-red-300 hover:text-red-500 transition"><i class="fas fa-times"></i></button>` : ''}
+                    
+                    <div class="flex justify-between items-start">
+                         <div>
+                            <h4 class="font-bold text-gray-800 text-sm">${hw.subject}</h4>
+                            <p class="text-gray-700 text-sm mt-1 leading-snug">${hw.task}</p>
+                        </div>
+                        <button onclick="explainHomework(${hw.id})" title="Объяснить с ИИ" class="bg-white border border-purple-200 hover:bg-purple-50 text-brand p-2 rounded-full shadow-sm transition transform hover:scale-110">
+                            <i class="fas fa-sparkles"></i>
+                        </button>
+                    </div>
+
+                    <div class="mt-2 flex items-center text-xs text-gray-500 font-bold">
+                        <i class="far fa-clock mr-1"></i> ${hw.date}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderNews() {
+            document.getElementById('news-container').innerHTML = news.map(n => `
+                <div class="aero-card p-6 flex flex-col h-full hover:border-brand-light transition duration-300">
+                    <span class="text-brand-dark text-xs font-bold mb-2 block relative z-10 bg-brand-light/20 w-fit px-2 py-0.5 rounded-full">${n.date}</span>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800 relative z-10">${n.title}</h3>
+                    <p class="text-gray-600 relative z-10 flex-grow leading-relaxed">${n.content}</p>
+                     ${isEditMode ? `<button onclick="deleteNews(${n.id})" class="mt-4 text-red-400 text-sm hover:text-red-600 font-bold text-right relative z-10">Удалить новость</button>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderProfiles() {
+             document.getElementById('profiles-grid').innerHTML = profiles.map(p => `
+                <div class="aero-card p-6 flex flex-col h-full hover:border-accent transition duration-300 text-center">
+                    ${isEditMode ? `<button onclick="deleteProfile(${p.id})" class="absolute top-2 right-2 text-red-300 hover:text-red-500 transition-colors z-20"><i class="fas fa-times"></i></button>` : ''}
+                    
+                    <div class="mb-4 relative z-10">
+                        <div class="text-6xl mb-3 transform hover:scale-110 transition-transform duration-200 cursor-default drop-shadow-md">${p.emoji}</div>
+                        <h3 class="font-bold text-xl text-gray-800">${p.name}</h3>
+                        <span class="inline-block mt-2 text-xs bg-gradient-to-r from-green-100 to-green-200 text-green-700 px-3 py-1 rounded-full font-bold shadow-sm border border-green-300">${p.hobby}</span>
+                    </div>
+                    
+                    <div class="mt-auto bg-white/60 p-4 rounded-xl border border-white shadow-inner relative z-10">
+                        <p class="text-gray-600 text-sm italic leading-relaxed">"${p.bio || 'Привет! Я из 5 Л!'}"</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function renderGallery() {
+            document.getElementById('gallery-grid').innerHTML = photos.map(src => `
+                <div class="aspect-square rounded-xl overflow-hidden shadow-md cursor-pointer hover:shadow-xl transition duration-300 border-4 border-white">
+                    <img src="${src}" class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+                </div>
+            `).join('');
+        }
+
+        function renderWishes() {
+            document.getElementById('wishes-container').innerHTML = wishes.map(w => `
+                <div class="bg-gradient-to-br from-pink-50 to-white p-6 rounded-2xl shadow-md border border-pink-200 relative">
+                     ${isEditMode ? `<button onclick="deleteWish(${w.id})" class="absolute top-2 right-2 text-red-300 hover:text-red-500 transition"><i class="fas fa-times"></i></button>` : ''}
+                    <div class="text-sm text-gray-500 mb-2 font-bold">Для: <span class="text-pink-500">${w.to}</span></div>
+                    <p class="text-gray-800 text-lg italic mb-4 leading-relaxed">"${w.text}"</p>
+                    <div class="text-right text-sm font-bold text-brand-dark">– ${w.from}</div>
+                </div>
+            `).join('');
+        }
+
+        // --- ЛОГИКА РЕДАКТИРОВАНИЯ (БЕЗ ИЗМЕНЕНИЙ) ---
+        function openEditLeadership(type) {
+            if(!isEditMode) { showToast("Включите режим редактирования!"); return; }
+            const modal = document.getElementById('editLeadershipModal');
+            const title = document.getElementById('leadershipModalTitle');
+            document.getElementById('leadershipType').value = type;
+            title.textContent = type === 'teacher' ? 'Данные учителя' : 'Данные старосты';
+            document.getElementById('leadName').value = leadership[type].name;
+            document.getElementById('leadPhone').value = leadership[type].phone;
+            modal.classList.remove('hidden');
+        }
+
+        function submitLeadership(e) {
+            e.preventDefault();
+            const type = document.getElementById('leadershipType').value;
+            leadership[type].name = document.getElementById('leadName').value;
+            leadership[type].phone = document.getElementById('leadPhone').value;
+            renderLeadership();
+            closeModal('editLeadershipModal');
+            showToast('Контакты обновлены!');
+        }
+
+        function submitTeacher(e) {
+            e.preventDefault();
+            const subject = document.getElementById('teachSubject').value;
+            const name = document.getElementById('teachName').value;
+            teachers.push({ id: Date.now(), subject, name });
+            renderTeachers();
+            closeModal('addTeacherModal');
+            e.target.reset();
+        }
+        function deleteTeacher(id) {
+            if(confirm('Удалить учителя?')) {
+                teachers = teachers.filter(t => t.id !== id);
+                renderTeachers();
+            }
+        }
+
+        function submitClassmate(e) {
+            e.preventDefault();
+            const name = document.getElementById('classmateName').value;
+            classmates.push(name);
+            classmates.sort();
+            renderClassList();
+            closeModal('addClassmateModal');
+            e.target.reset();
+        }
+        function deleteClassmate(index) {
+            if(confirm('Удалить ученика?')) {
+                classmates.splice(index, 1);
+                renderClassList();
+            }
+        }
+
+        function submitHomework(e) {
+            e.preventDefault();
+            const subject = document.getElementById('hwSubject').value;
+            const task = document.getElementById('hwTask').value;
+            const date = document.getElementById('hwDate').value;
+            homework.push({ id: Date.now(), subject, task, date });
+            renderHomework();
+            closeModal('addHomeworkModal');
+            e.target.reset();
+        }
+        function deleteHomework(id) {
+            homework = homework.filter(h => h.id !== id);
+            renderHomework();
+        }
+        
+        function submitNews(e) {
+            e.preventDefault();
+            const title = document.getElementById('newsTitle').value;
+            const content = document.getElementById('newsContent').value;
+            news.unshift({ id: Date.now(), title, content, date: new Date().toLocaleDateString('ru-RU', {day:'2-digit', month:'2-digit'})});
+            renderNews();
+            closeModal('addNewsModal');
+            e.target.reset();
+        }
+        function deleteNews(id) {
+             news = news.filter(n => n.id !== id);
+             renderNews();
+        }
+
+        function submitProfile(e) {
+            e.preventDefault();
+            const name = document.getElementById('profName').value;
+            const hobby = document.getElementById('profHobby').value;
+            const bio = document.getElementById('profBio').value;
+            const emoji = document.getElementById('profEmoji').value;
+            
+            profiles.push({ id: Date.now(), name, hobby, bio, emoji });
+            renderProfiles();
+            closeModal('addStudentProfileModal');
+            e.target.reset();
+        }
+        function deleteProfile(id) {
+             profiles = profiles.filter(p => p.id !== id);
+             renderProfiles();
+        }
+        
+        function submitWish(e) {
+            e.preventDefault();
+            const to = document.getElementById('wishTo').value;
+            const text = document.getElementById('wishText').value;
+            const from = document.getElementById('wishFrom').value;
+            
+            wishes.push({ id: Date.now(), to, text, from });
+            renderWishes();
+            closeModal('addWishModal');
+            e.target.reset();
+            showToast('Пожелание отправлено!');
+        }
+        function deleteWish(id) {
+            wishes = wishes.filter(w => w.id !== id);
+            renderWishes();
+        }
+
+        function editDaySchedule(day) {
+            const current = schedule[day].join(', ');
+            try {
+                const newLessons = prompt(`Введите уроки для ${day} через запятую:`, current);
+                if (newLessons !== null) {
+                    schedule[day] = newLessons.split(',').map(s => s.trim());
+                    renderSchedule();
+                }
+            } catch (e) {
+                alert("Ваш браузер блокирует окна ввода. Попробуйте другой браузер.");
+            }
+        }
+        
+        function handlePhotoUpload(input) {
+             if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photos.unshift(e.target.result);
+                    renderGallery();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // --- ОБЩИЕ ФУНКЦИИ ---
+        function switchTab(id) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.getElementById('mobile-menu').classList.add('hidden');
+            window.scrollTo(0,0);
+        }
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+        function openModal(id) {
+            if(id !== 'addStudentProfileModal' && !isEditMode && id !== 'addNewsModal' && id !== 'addWishModal') { 
+                // Logic
+            }
+            document.getElementById(id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => t.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+    </script>
+</body>
+</html>
